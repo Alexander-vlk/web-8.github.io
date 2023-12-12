@@ -1,3 +1,8 @@
+const openFormButton = document.getElementById('openFormButton');
+const closeFromButton = document.getElementById('closeFormButton');
+const popupForm = document.getElementById('popupForm');
+
+
 $(function(){
     $(".formcarryForm").submit(function(e){
       e.preventDefault();
@@ -30,16 +35,13 @@ $(function(){
             alert("Request failed, " + errorObject.title + ": " + errorObject.message);
           },
           complete: function(){
-            // This will be fired after request is complete whether it's successful or not.
-            // Use this block to run some code after request is complete.
+            history.pushState({ formOpen: false }, '', '/');
+            popupForm.style.display = 'none';
           }
       });
     });
   });
 
-const openFormButton = document.getElementById('openFormButton');
-const closeFromButton = document.getElementById('closeFormButton');
-const popupForm = document.getElementById('popupForm');
 
 openFormButton.addEventListener('click', function() {
     popupForm.style.display = 'block';
@@ -48,11 +50,13 @@ openFormButton.addEventListener('click', function() {
 openFormButton.addEventListener('click', function() {
   popupForm.style.display = 'block';
   history.pushState({ formOpen: true }, '', '?formOpen=true');
+  openFormButton.style.display = "none";
 });
 
 closeFormButton.addEventListener('click', function() {
   history.pushState({ formOpen: false }, '', '/');
   popupForm.style.display = 'none';
+  openFormButton.style.display = "block";
 });
 
 window.addEventListener('popstate', function(event) {
